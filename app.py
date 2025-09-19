@@ -1,3 +1,8 @@
+# This must be the VERY FIRST import/statement in your application
+import eventlet
+eventlet.monkey_patch()
+
+# Now import other modules
 import os
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from flask_socketio import SocketIO, emit, join_room
@@ -24,7 +29,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 bcrypt.init_app(app)
 migrate = Migrate(app, db)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
 
 # Create database tables
 with app.app_context():
