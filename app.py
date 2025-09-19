@@ -107,7 +107,14 @@ def upload_audio():
     if 'user_id' not in session:
         return jsonify({'error': 'Not authenticated'}), 401
     
-    audio_data = request.files['audio'].read()
+    if 'audio' not in request.files:
+        return jsonify({'error': 'No audio file provided'}), 400
+    
+    audio_file = request.files['audio']
+    if audio_file.filename == '':
+        return jsonify({'error': 'No audio file selected'}), 400
+    
+    audio_data = audio_file.read()
     audio_base64 = base64.b64encode(audio_data).decode('utf-8')
     data_url = f"data:audio/webm;base64,{audio_base64}"
     

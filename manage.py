@@ -13,5 +13,12 @@ migrate = Migrate(app, db)
 # Use Flask CLI
 cli = FlaskGroup(app)
 
+@cli.command("create_db")
+def create_db():
+    """Create the database tables"""
+    with app.app_context():
+        db.create_all()
+    print("Database tables created!")
+
 if __name__ == "__main__":
     cli()
